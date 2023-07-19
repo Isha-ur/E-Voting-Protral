@@ -1,0 +1,1175 @@
+import React, { useState } from 'react'
+import "./Login.css"
+import { useAuth } from '../context/Auth'
+import { useNavigate , useLocation , Link} from 'react-router-dom'
+import axios from 'axios'
+const Login = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const[formData, setFormData] = useState({
+        email:"",
+        password:""
+    })
+    const[auth,setAuth] = useAuth();
+
+    console.log(formData);
+
+    function changeHandler(event)
+    {
+        setFormData(function(prevFormData){
+            return({
+                ...prevFormData,
+                [event.target.name]:event.target.value
+            })
+        })
+    }
+
+    async function submitHandler(event)
+    {
+      event.preventDefault();
+      try {
+        const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`,formData)
+        if(res && res.data.success)
+        {
+          alert(res.data.success);
+          setAuth({
+            ...auth,
+            user : res.data.user,
+            token : res.data.token
+          })
+          localStorage.setItem('auth',JSON.stringify(res.data));
+          
+        }
+        else{
+          alert(res.data.message);
+        }
+      } catch (error) {
+        alert("someting went worng")
+      }
+    }
+  return (
+    <div className="parent-conatiner">
+        <h1 className="text-3xl m-10" >Login Form</h1>
+
+      <form className="w-full max-w-sm" onSubmit={submitHandler}>
+      
+
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="inline-email"
+            >
+            Enter Email
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="inline-email"
+              type="email"
+              defaultValue="JaneDoe@gmail.com"
+              name="email"
+              value={formData.email}
+              onChange={changeHandler}
+            />
+          </div>
+        </div>
+        {/* here end */}
+
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="inline-password"
+            >
+              Password
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="inline-password"
+              type="password"
+              placeholder="******************"
+              name="password"
+              value={formData.password}
+              onChange={changeHandler}
+            />
+          </div>
+        </div>
+        {/* here */}
+        
+        <div className="md:flex md:items-center">
+          <div className="md:w-1/3" />
+          <div className="md:w-2/3">
+            <button
+              className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+        
+      </form>
+    </div>
+  )
+}
+
+export default Login
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react'
+import "./Login.css"
+const Login = () => {
+    const[formData, setFormData] = useState({
+        email:"",
+        password:""
+    })
+
+    console.log(formData);
+
+    function changeHandler(event)
+    {
+        setFormData(function(prevFormData){
+            return({
+                ...prevFormData,
+                [event.target.name]:event.target.value
+            })
+        })
+    }
+
+    function submitHandler(event)
+    {
+        event.preventDefault();
+    
+        console.log("the value of the form data");
+        console.log(formData);
+    }
+  return (
+    <div className="parent-conatiner">
+        <h1 className="text-3xl m-10" >Login Form</h1>
+
+      <form className="w-full max-w-sm" onSubmit={submitHandler}>
+      
+
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="inline-email"
+            >
+            Enter Email
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="inline-email"
+              type="email"
+              defaultValue="JaneDoe@gmail.com"
+              name="email"
+              value={formData.email}
+              onChange={changeHandler}
+            />
+          </div>
+        </div>
+        {/* here end */}
+
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label
+              className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+              htmlFor="inline-password"
+            >
+              Password
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id="inline-password"
+              type="password"
+              placeholder="******************"
+              name="password"
+              value={formData.password}
+              onChange={changeHandler}
+            />
+          </div>
+        </div>
+        {/* here */}
+        
+        <div className="md:flex md:items-center">
+          <div className="md:w-1/3" />
+          <div className="md:w-2/3">
+            <button
+              className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default Login
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { useEffect, useState } from 'react';
+import './App.css';
+import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import Frogot from './components/forms/Forgot';
+import Login from './components/forms/Login';
+import RegistrationForm from './components/forms/RegistrationForm';
+import { apiUrl, centralApiUrl } from './data';
+import Spinner from './components/Spinner';
+import Cards from './components/pages/Cards/Cards';
+import Table from './components/pages/Table/Table';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './components/pages/Home';
+function App() {
+  const[stateData , setStateData] = useState(null);
+  const[centralData, setCentralData] = useState(null);
+  const[loading, setLoading] = useState(true);
+
+  async function fetchData()
+  {
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const centralResponse = await fetch(centralApiUrl);
+      const C_Data = await centralResponse.json();
+      setStateData(data);
+      setCentralData(C_Data);
+    } catch (error) {
+      alert("something went wrong while fetching data from api")
+    }
+    setLoading(false);
+  }
+
+  useEffect(()=>{
+    fetchData();
+  },[])
+
+
+
+  /*
+
+  export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="blogs" element={<Blogs />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+  */
+
+  return (
+    <BrowserRouter>
+    <div className="App min-h-screen flex flex-col 	">
+      {/* <div>
+      <Navbar/>
+      </div>
+      <div className="  mx-auto flex flex-wrap justify-center items-center ">
+      {
+        loading ? (<Spinner/>):(<Cards stateData={stateData} centralData={centralData}></Cards>)
+      }
+     </div>
+      <div>
+      <Table/>
+     </div> 
+      <div>
+      <Footer/>
+      </div> */}
+
+      
+        <Routes>
+          <Route path="/" element={<Navbar></Navbar>}>
+            <Route index element={<Home/>}/>
+            {/* <Route path='/'/> */}
+          </Route>
+        </Routes>
+      
+    </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+import Card from '../Card/Card';
+import Heading from '../Heading/Heading';
+import './Cards.css';
+import CentralCard from '../Card/CentralCard';
+import { stateApiUrl, centralApiUrl} from '../../../data';
+
+const Cards = (props) => {
+
+  
+  const stateData = props.stateData;
+  const centralData = props.centralData;
+  const renderStateData = () => {
+    return Object.values(stateData).map((state) => {
+      return (
+        <div key={state.id}>
+          <Heading heading={state.name} />
+          {Object.values(state.cities).map((party) => (
+            <Card key={party.name} party={party} />
+          ))}
+        </div>
+      );
+    });
+  };
+
+  const renderCentralData = () => {
+    return Object.values(centralData).map((central) => {
+      return (
+        <div key={central.id}>
+          <CentralCard data={central}></CentralCard>
+        </div>
+      );
+    });
+  };
+  return <div className='cardsPage'>{renderCentralData()}</div>;
+};
+
+export default Cards;
+
+
+
+
+
+
+
+
+///         table --------------------
+
+
+
+
+
+
+
+
+
+import React from "react";
+
+const Table = () => {
+  return (
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
+        <div>
+          <button
+            id="dropdownActionButton"
+            data-dropdown-toggle="dropdownAction"
+            className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            type="button"
+          >
+            <span className="sr-only">Action button</span>
+            Action
+            <svg
+              className="w-2.5 h-2.5 ml-2.5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+          {/* Dropdown menu */}
+          <div
+            id="dropdownAction"
+            className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          >
+            <ul
+              className="py-1 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownActionButton"
+            >
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Reward
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Promote
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Activate account
+                </a>
+              </li>
+            </ul>
+            <div className="py-1">
+              <a
+                href="#"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              >
+                Delete User
+              </a>
+            </div>
+          </div>
+        </div>
+        <label htmlFor="table-search" className="sr-only">
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="table-search-users"
+            className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search for users"
+          />
+        </div>
+      </div>
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="p-4">
+              <div className="flex items-center">
+                <input
+                  id="checkbox-all-search"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="checkbox-all-search" className="sr-only">
+                  checkbox
+                </label>
+              </div>
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Position
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="w-4 p-4">
+              <div className="flex items-center">
+                <input
+                  id="checkbox-table-search-1"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="checkbox-table-search-1" className="sr-only">
+                  checkbox
+                </label>
+              </div>
+            </td>
+            <th
+              scope="row"
+              className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src="/docs/images/people/profile-picture-1.jpg"
+                alt="Jese image"
+              />
+              <div className="pl-3">
+                <div className="text-base font-semibold">Neil Sims</div>
+                <div className="font-normal text-gray-500">
+                  neil.sims@flowbite.com
+                </div>
+              </div>
+            </th>
+            <td className="px-6 py-4">React Developer</td>
+            <td className="px-6 py-4">
+              <div className="flex items-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2" />{" "}
+                Online
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <a
+                href="#"
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                Edit user
+              </a>
+            </td>
+          </tr>
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="w-4 p-4">
+              <div className="flex items-center">
+                <input
+                  id="checkbox-table-search-2"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="checkbox-table-search-2" className="sr-only">
+                  checkbox
+                </label>
+              </div>
+            </td>
+            <th
+              scope="row"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src="/docs/images/people/profile-picture-3.jpg"
+                alt="Jese image"
+              />
+              <div className="pl-3">
+                <div className="text-base font-semibold">Bonnie Green</div>
+                <div className="font-normal text-gray-500">
+                  bonnie@flowbite.com
+                </div>
+              </div>
+            </th>
+            <td className="px-6 py-4">Designer</td>
+            <td className="px-6 py-4">
+              <div className="flex items-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2" />{" "}
+                Online
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <a
+                href="#"
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                Edit user
+              </a>
+            </td>
+          </tr>
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="w-4 p-4">
+              <div className="flex items-center">
+                <input
+                  id="checkbox-table-search-2"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="checkbox-table-search-2" className="sr-only">
+                  checkbox
+                </label>
+              </div>
+            </td>
+            <th
+              scope="row"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src="/docs/images/people/profile-picture-2.jpg"
+                alt="Jese image"
+              />
+              <div className="pl-3">
+                <div className="text-base font-semibold">Jese Leos</div>
+                <div className="font-normal text-gray-500">
+                  jese@flowbite.com
+                </div>
+              </div>
+            </th>
+            <td className="px-6 py-4">Vue JS Developer</td>
+            <td className="px-6 py-4">
+              <div className="flex items-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2" />{" "}
+                Online
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <a
+                href="#"
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                Edit user
+              </a>
+            </td>
+          </tr>
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="w-4 p-4">
+              <div className="flex items-center">
+                <input
+                  id="checkbox-table-search-2"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="checkbox-table-search-2" className="sr-only">
+                  checkbox
+                </label>
+              </div>
+            </td>
+            <th
+              scope="row"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src="/docs/images/people/profile-picture-5.jpg"
+                alt="Jese image"
+              />
+              <div className="pl-3">
+                <div className="text-base font-semibold">Thomas Lean</div>
+                <div className="font-normal text-gray-500">
+                  thomes@flowbite.com
+                </div>
+              </div>
+            </th>
+            <td className="px-6 py-4">UI/UX Engineer</td>
+            <td className="px-6 py-4">
+              <div className="flex items-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2" />{" "}
+                Online
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <a
+                href="#"
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                Edit user
+              </a>
+            </td>
+          </tr>
+          <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="w-4 p-4">
+              <div className="flex items-center">
+                <input
+                  id="checkbox-table-search-3"
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label htmlFor="checkbox-table-search-3" className="sr-only">
+                  checkbox
+                </label>
+              </div>
+            </td>
+            <th
+              scope="row"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src="/docs/images/people/profile-picture-4.jpg"
+                alt="Jese image"
+              />
+              <div className="pl-3">
+                <div className="text-base font-semibold">Leslie Livingston</div>
+                <div className="font-normal text-gray-500">
+                  leslie@flowbite.com
+                </div>
+              </div>
+            </th>
+            <td className="px-6 py-4">SEO Specialist</td>
+            <td className="px-6 py-4">
+              <div className="flex items-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2" />{" "}
+                Offline
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <a
+                href="#"
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              >
+                Edit user
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default Table;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   isha ///
+
+import React from "react";
+
+const Parties = (props) => {
+  return (
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
+        
+        <label htmlFor="table-search" className="sr-only">
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="table-search-users"
+            className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search for users"
+          />
+        </div>
+      </div>
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            
+            <th scope="col" className="px-6 py-3">
+              logo
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Address
+            </th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          
+        {
+          Object.values(props.centralData).map(function(central){
+              return(
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            
+            <td
+             
+            >
+              <img
+                className="w-10 h-10 rounded-full"
+                src={central.url}
+                alt="Jese image"
+              />
+              
+            </td>
+            <td
+            >
+  
+              <div className="pl-3">
+                <div className="text-base font-semibold">{central.name}</div>
+               
+              </div>
+            </td>
+            <td className="px-6 py-4">{central.address}</td>
+            
+            
+          </tr>
+              )
+            })
+        }
+       
+          
+          
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default Parties;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+import Card from '../Card/Card';
+import Heading from '../Heading/Heading';
+import './Cards.css';
+import CentralCard from '../Card/CentralCard';
+import CentralParties from '../Parties/CentralParties';
+import CardGov from '../Parties/CardGov';
+import StateParties from '../Parties/StateParties';
+
+const Cards = (props) => {
+  const stateData = props.stateData;
+  const centralData = props.centralData;
+  const govData = props.govData;
+  console.log(govData)
+  const renderStateData = () => {
+    return Object.values(stateData).map((state) => {
+      return (
+        <div key={state.id}>
+          <Heading heading={state.name} />
+          {Object.values(state.cities).map((party) => (
+            <Card key={party.name} party={party} />
+          ))}
+        </div>
+      );
+    });
+  };
+
+  const renderCentralData = () => {
+    return Object.values(centralData).map((central) => {
+      return (
+        <div key={central.id}>
+          <CentralCard data={central}></CentralCard>
+        </div>
+      );
+    });
+  };
+  //[{},{}] central data
+  function renderCentralDataToParties(){
+    
+    // return Object.values(centralData).map(function(central){
+    //   return(
+    //     <div>
+    //       {/* <CentralCard data={central}></CentralCard> */}
+    //       <Parties data={central}></Parties>
+    //     </div>
+    //   )
+    // })
+    return(
+          <div>
+            {/* <CentralCard data={central}></CentralCard> */}
+            <CentralParties data={centralData} heading={""}></CentralParties>
+          </div>
+      )
+  }
+//[{id name,cites:[{}{}]}]
+  const renderStateDataInParties = () => {
+    
+      return (
+        <div>
+          <StateParties data={stateData}></StateParties>
+        </div>
+      );
+  };
+
+  const renderGovDataInParties = () => {
+    return(
+      <div>
+        <CardGov td={govData.records} heading={"govData"}></CardGov>
+      </div>
+    )
+  };
+
+ 
+  return <div className='cardsPage'>
+    {/* {renderCentralData()} */}
+    {renderCentralDataToParties()}
+    {renderStateDataInParties()}
+    {/* {renderStateData()} */}
+    {renderGovDataInParties()}
+  </div>;
+};
+
+export default Cards;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const StateParties = (props) => {
+    return (
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-4">
+         <h1>{props.heading}</h1>
+        <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
+          <label htmlFor="table-search" className="sr-only">
+           Search
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="table-search-users"
+              className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search for users"
+            />
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <div className="rounded-lg overflow-hidden border dark:border-gray-700">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    Election Symbol
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Name
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Address
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    State
+                  </th>
+                </tr>
+              </thead>
+             
+              <tbody>
+    {Object.values(props.data).map((state) => {
+      return Object.values(state.cities).map(function (data) {
+        return (
+          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td className="px-6 py-4">
+              <div className="w-20 h-20 rounded-full overflow-hidden">
+                <img
+                  className="object-cover w-full h-full"
+                  src={data.url}
+                  alt="Jese image"
+                />
+              </div>
+            </td>
+            <td className="px-6 py-4">
+              <div className="pl-3">
+                <div className="text-base font-semibold">{data.name}</div>
+              </div>
+            </td>
+            <td className="px-6 py-4">{data.address}</td>
+            <td className="px-6 py-4">{state.name}</td>
+          </tr>
+        );
+      });
+    })}
+  </tbody>
+  
+             
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  
+  export default StateParties;
+  
+
+
+
+
+const voteModel = require("../models/voteModel.js");
+
+exports.updateVoteController = async(req, res) => {
+      try {
+            const{voter_ID, member_ID, name, party, constituency, state} = req.body;
+
+            const voter = await voteModel.findOne({voter_ID});
+            if (!voter) {
+                  return res.status(404).send({
+                    success: false,
+                    message: "Voter not found",
+                  });
+            }
+
+            if(voter.value === true)
+            {
+                  return res.status(201).send({
+                        success:false,
+                        message:"You have already given your vote"
+                  })
+            }
+            
+            const id = voter._id;
+            const updatedVoter = await voteModel.findByIdAndUpdate(id, {
+                        name: name || voter.name,
+                        party: party || voter.party,
+                        member_ID: member_ID || voter.member_ID,
+                        constituency: constituency || voter.constituency,
+                        state: state || voter.state,
+                        value: 1 || voter.value
+                  }, {new:true});
+            return res.status(200).send({
+                        success:true,
+                        message:"Vote Successfully done HURRAH"
+                  })
+
+      } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                  success:false,
+                  message:"Error while submitting your vote"
+            })
+      }
+}

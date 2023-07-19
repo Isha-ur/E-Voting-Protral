@@ -1,0 +1,10 @@
+.parent-conatiner
+{
+
+    height: 120vh;
+    display: flex;
+    
+    
+    flex-direction: column;
+   
+}

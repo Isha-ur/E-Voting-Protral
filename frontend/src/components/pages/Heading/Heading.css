@@ -1,0 +1,40 @@
+.mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .text-3xl {
+    font-size: 2rem;
+  }
+  
+  .font-extrabold {
+    font-weight: 800;
+  }
+  
+  .text-gray-900 {
+    color: #333;
+  }
+  
+  @media (min-width: 768px) {
+    .text-4xl {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .text-4xl {
+      font-size: 3rem;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .text-3xl {
+      font-size: 3.5rem;
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .text-3xl {
+      font-size: 4rem;
+    }
+  }
+  
