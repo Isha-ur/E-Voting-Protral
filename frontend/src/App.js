@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import Footer from './components/Layout/Footer';
-import Navbar from './components/Layout/Navbar';
+
 import Frogot from './components/forms/Forgot';
 import Login from './components/forms/Login';
 import RegistrationForm from './components/forms/RegistrationForm';
@@ -15,6 +14,10 @@ import Home from './components/Layout/Home';
 import PageNotFound from './components/Layout/PageNotFound';
 import Profile from './components/Layout/Profile';
 import ShabhaLogin from './components/Rashtrapati/ShabhaLogin';
+import CandidatesForElection from './components/Rashtrapati/CandidatesForElection';
+import RhastrapatiResults from './components/Rashtrapati/RhastrapatiResults';
+import About from './components/pages/About';
+import PrivacyPolicy from './components/pages/PrivacyPolicy';
 
 function App() {
   const [stateData, setStateData] = useState(null);
@@ -63,11 +66,18 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<RegistrationForm/>}/>
+        <Route path="/forgot-pass" element={<Frogot/>}></Route>
+        
         <Route path= '/vote' element={loading === true ? <Spinner/> : <Cards stateData={stateData} centralData={centralData} govData={govData} fun = {"renderGovDataInParties"}/>}/>
         <Route path= '/political' element={loading === true ? <Spinner/> : <Cards stateData={stateData} centralData={centralData} govData={govData} fun = {"political"}/>}/>
         <Route path='/profile' element={<Profile/>}/>
+        <Route path='/about' element={<About/>}/>
+        <Route path='/privacy' element={<PrivacyPolicy/>}/>
         <Route path="/result" element={<Result/>} />
         <Route path="/rashtrapati" element={<ShabhaLogin/>} />
+        <Route path="/getCandidates" element={<CandidatesForElection/>} />
+        <Route path="/presidentResults" element={<RhastrapatiResults/>} />
+      
         <Route path="*" element={<PageNotFound />}></Route>
       </Routes>
     </>

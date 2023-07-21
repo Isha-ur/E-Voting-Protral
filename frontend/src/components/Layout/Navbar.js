@@ -1,207 +1,222 @@
-import React from "react";
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/Auth";
 import { toast } from "react-toastify";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-
-const Navbar = () => {
+export default function NavBar() {
+  const [navbar, setNavbar] = useState(false);
   const [Auth, setAuth] = useAuth();
-  
-  const navigation = [
-    { name: "Home", to: "/", current: true },
-    { name: "Vote", to: Auth?.user? "/vote" : "/login", current: false },
-    { name: "Guidelines", to: "/", current: false },
-    { name: "Political Parties", to: "/political", current: false },
-    { name: "Rashtrapati Elections", to: "/rashtrapati", current: false },
-  ];
 
   const handleLogout = () => {
-    // Clear data from local storage
-    localStorage.removeItem("auth");
-    localStorage.removeItem("token");
-  
-    // Update the Auth state
     setAuth({
       ...Auth,
       user: null,
       token: "",
     });
-  
     toast.success("Logout Successfully");
+    localStorage.clear();
   };
-  
 
   return (
-    <Disclosure as="nav" className="bg-gray-800 ">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"
-                    alt="Your Company"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <NavLink
-                        key={item.name}
-                        to={item.to}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
+    <nav className="w-full bg-gray-800 shadow sticky top-0 z-50">
+      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
+        <div>
+          <div className="flex items-center justify-between py-3 md:py-5 md:block">
+            <img
+              className="w-10 h-auto"
+              src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_India.png"
+              alt=""
+            />
+            <div className="md:hidden">
+              <button
+                className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
+                onClick={() => setNavbar(!navbar)}
+              >
+                {navbar ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-  {Auth?.user? (
-    <>
-      <Menu.Item>
-        {({ active }) => (
-          <NavLink
-            to="/profile"
-            className={classNames(
-              active ? "bg-gray-100" : "",
-              "block px-4 py-2 text-sm text-gray-700"
-            )}
-          >
-            Your Profile
-          </NavLink>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <NavLink
-            to="/"
-            onClick={handleLogout}
-            className={classNames(
-              active ? "bg-gray-100" : "",
-              "block px-4 py-2 text-sm text-gray-700"
-            )}
-          >
-            Logout
-          </NavLink>
-        )}
-      </Menu.Item>
-    </>
-  ) : (
-    <>
-      <Menu.Item>
-        {({ active }) => (
-          <NavLink
-            to="/register"
-            className={classNames(
-              active ? "bg-gray-100" : "",
-              "block px-4 py-2 text-sm text-gray-700"
-            )}
-          >
-            Register
-          </NavLink>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <NavLink
-            to="/login"
-            className={classNames(
-              active ? "bg-gray-100" : "",
-              "block px-4 py-2 text-sm text-gray-700"
-            )}
-          >
-            Login
-          </NavLink>
-        )}
-      </Menu.Item>
-    </>
-  )}
-</Menu.Items>
-
-                  </Transition>
-                </Menu>
-              </div>
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
-  );
-};
+        </div>
+        <div>
+          <div
+            className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
+              navbar ? "block" : "hidden"
+            }`}
+          >
+            {/* Show all the links for small devices */}
+            <ul className="items-center justify-center space-y-8 md:hidden">
+              <li className="text-white hover:text-indigo-200">
+                <NavLink to="/">Home</NavLink>
+              </li>
+              <li className="text-white hover:text-indigo-200">
+                <NavLink to="/political">Political Parties</NavLink>
+              </li>
+              <li className="text-white hover:text-indigo-200">
+                <NavLink to={Auth?.user ? "/vote" : "/login"}>Vote</NavLink>
+              </li>
+              <li className="text-white hover:text-indigo-200">
+                <NavLink to="/rashtrapati">Rashtrapati Elections</NavLink>
+              </li>
+              <li className="text-white hover:text-indigo-200">
+                <NavLink to="/presidentResults">
+                  Rashtrapati Election Results
+                </NavLink>
+              </li>
+              <li className="text-white hover:text-indigo-200">
+                <NavLink to="/result">Election Results</NavLink>
+              </li>
+            </ul>
 
-export default Navbar;
+            {/* Responsive Styles */}
+            <div className="mt-3 space-y-2 lg:hidden md:inline-block">
+              {Auth?.user ? (
+                <div className="flex space-x-2">
+                  <NavLink
+                    to="/profile"
+                    className="inline-block flex-1 px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                  >
+                    Your Profile
+                  </NavLink>
+                  <NavLink
+                    to="/"
+                    onClick={handleLogout}
+                    className="inline-block flex-1 px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                  >
+                    Logout
+                  </NavLink>
+                </div>
+              ) : (
+                <div className="flex space-x-2">
+                  <NavLink
+                    to="/login"
+                    className="inline-block flex-1 px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                  >
+                    Sign in
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    className="inline-block flex-1 px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                  >
+                    Sign up
+                  </NavLink>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden md:inline-block">
+          <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+            <li className="text-white hover:text-indigo-200">
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li className="text-white hover:text-indigo-200">
+              <NavLink to="/political">Political Parties</NavLink>
+            </li>
+            <li className="text-white hover:text-indigo-200">
+              <NavLink to={Auth?.user ? "/vote" : "/login"}>Vote</NavLink>
+            </li>
+            <li className="text-white hover:text-indigo-200">
+              <NavLink to="/rashtrapati">Rashtrapati Elections</NavLink>
+            </li>
+            <li>
+              <div className="relative">
+                <button
+                  className="w-full p-2.5 text-white bg-gray-800 border rounded-md shadow-sm outline-none appearance-none"
+                  onClick={() => setNavbar(!navbar)}
+                >
+                  Results
+                </button>
+                {navbar && (
+                  <div className="absolute top-full left-0 mt-2 py-2 bg-white shadow-lg rounded-md z-10">
+                    <NavLink
+                      to="/result"
+                      className="block px-4 py-2 text-gray-800 hover:bg-indigo-100"
+                      onClick={() => setNavbar(false)}
+                    >
+                      Election Results
+                    </NavLink>
+                    <NavLink
+                      to="/presidentResults"
+                      className="block px-4 py-2 text-gray-800 hover:bg-indigo-100"
+                      onClick={() => setNavbar(false)}
+                    >
+                      Rashtrapati Election
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div className="hidden space-x-2 md:inline-block">
+          {Auth?.user ? (
+            <>
+              <div className="flex space-x-2">
+                <NavLink
+                  to="/profile"
+                  className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                >
+                  Your Profile
+                </NavLink>
+                <NavLink
+                  to="/"
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                >
+                  Logout
+                </NavLink>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex m-4 space-x-1">
+                <NavLink
+                  to="/login"
+                  className="inline-block mr-2 px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                >
+                  Sign in
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="inline-block px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                >
+                  Sign up
+                </NavLink>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+}

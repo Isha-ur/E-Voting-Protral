@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Layout from "../Layout/Layout";
 
 const Result = () => {
   const [voteData, setVoteData] = useState([]);
@@ -63,7 +64,7 @@ const Result = () => {
   );
 
   return (
-    <>
+    <Layout title={"Result of Election"}>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg p-4">
         <div className="flex justify-center items-center">
           <h1 className="text-2xl font-bold mb-4">Result List</h1>
@@ -151,7 +152,8 @@ const Result = () => {
           </div>
         </div>
       </div>
-    </>
+      </Layout>
+  
   );
 };
 

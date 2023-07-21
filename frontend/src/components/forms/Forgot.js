@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import "./Login.css"
+import "./RegistrationForm.css"
 import { useAuth } from '../context/Auth'
 import { useNavigate , useLocation , Link} from 'react-router-dom'
 import axios from 'axios'

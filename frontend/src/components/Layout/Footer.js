@@ -28,13 +28,13 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-600 text-gray-400">
                 <li className="mb-4">
-                  <NavLink to="https://flowbite.com" className="hover:underline">
+                  <NavLink to="/presidentResults" className="hover:underline">
                     Results
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
-                    to="https://tailwindcss.com/"
+                    to="/political"
                     className="hover:underline"
                   >
                     Parties
@@ -49,7 +49,7 @@ const Footer = () => {
               <ul className="text-gray-600 text-gray-400">
                 <li className="mb-4">
                   <NavLink
-                    to="https://github.com/themesberg/flowbite"
+                    to="https://github.com"
                     className="hover:underline "
                   >
                     Github
@@ -71,13 +71,13 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-600 dark:text-gray-400">
                 <li className="mb-4">
-                  <NavLink to="#" className="hover:underline">
+                  <NavLink to="/privacy" className="hover:underline">
                     Privacy Policy
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink href="#" className="hover:underline">
-                    Terms &amp; Conditions
+                  <NavLink to="/about" className="hover:underline">
+                   About Us 
                   </NavLink>
                 </li>
               </ul>

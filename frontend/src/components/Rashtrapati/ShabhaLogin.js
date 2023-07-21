@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import Layout from '../Layout/Layout';
+import Layout from '../Layout/Layout.js';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const ShabhaLogin = () => {
   const [selectedShabha, setSelectedShabha] = useState('');
   const [foundMember, setFoundMember] = useState(false);
+  const navigate = useNavigate();
 
   const LokshabhaApi = " https://api.data.gov.in/resource/81153f15-b4da-45b5-a299-f307351c5001?api-key=579b464db66ec23bdd00000134992bdb58b546c64be0e84af31ad941&format=json&limit=1000"
 
@@ -27,8 +29,10 @@ const ShabhaLogin = () => {
         for (const user of data.records) {
             if (user.memberid === ID) {
               setFoundMember(true);
+              localStorage.setItem("MemberVote", ID);
               toast.success("Member Found in Lok Sabha");
-              return; // idhar return kra diya toh bss 
+              navigate('/getCandidates');
+              return;  
             }
           }
 
@@ -47,11 +51,12 @@ const ShabhaLogin = () => {
         for (const user of data.records) {
             if (user.mpcode === ID) {
               setFoundMember(true);
+              localStorage.setItem("MemberVote", ID);
               toast.success("Member Found in Rajya Sabha");
+              navigate('/getCandidates');
               return;
             }
           }
-// ek min
          toast.warning("You are not a member of Rajya Shabha");
       
       } catch (error) {
